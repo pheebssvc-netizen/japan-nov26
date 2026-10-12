@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#263c35">
+  <title>名古屋・白川鄉・飛驒高山｜慢遊手帳 2026</title>
+  <style>
+    :root{
+      --ink:#24352f;--muted:#69766f;--paper:#f7f5ef;--card:#fffefa;
+      --green:#294b3e;--green2:#dce8dd;--rust:#b85d43;--gold:#d6b46a;
+      --line:#e4e2d9;--shadow:0 8px 24px rgba(35,50,42,.07);--radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.65}
+    a{color:#27654e;overflow-wrap:anywhere}
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    .hero{background:linear-gradient(125deg,rgba(25,57,45,.94),rgba(46,77,61,.88)),radial-gradient(circle at 90% 15%,#d6b46a,transparent 32%);color:#fff;padding:34px 18px 28px}
+    .hero-inner,.wrap{width:min(1100px,100%);margin:auto}
+    .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#e7d7aa;font-weight:700}
+    h1{font-size:clamp(1.8rem,5vw,3.1rem);line-height:1.18;margin:.45rem 0 .6rem;letter-spacing:.01em}
+    .hero p{margin:.35rem 0;color:#f0f2ed}
+    .hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+    .pill{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 11px;font-size:.84rem;background:rgba(255,255,255,.08)}
+    .wrap{padding:20px 16px 50px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .nav{display:flex;gap:7px;flex-wrap:wrap}
+    .nav a{display:inline-block;text-decoration:none;background:#fffefa;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.9rem;color:var(--ink)}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:var(--green);color:white}
+    .btn.secondary{background:#e7ece6;color:var(--green)}
+    .btn.outline{background:transparent;border:1px solid var(--line);color:var(--ink)}
+    .btn.danger{background:#f7e6e0;color:#8f3928}
+    .status{font-size:.85rem;color:var(--muted);padding:9px 12px;background:#eeeee7;border-radius:12px}
+    .notice{background:#fff8e6;border:1px solid #ead8a8;padding:13px 15px;border-radius:14px;margin:14px 0;color:#5d4b27;font-size:.92rem}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:26px 0 12px}
+    .section-head h2{margin:0;font-size:1.35rem}
+    .section-head p{margin:3px 0 0;color:var(--muted);font-size:.9rem}
+    .hotel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .hotel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+    .hotel .num{font-size:.76rem;font-weight:800;color:var(--rust);letter-spacing:.08em}
+    .hotel h3{font-size:1.04rem;margin:5px 0}
+    .hotel p{font-size:.9rem;color:var(--muted);margin:5px 0}
+    .hotel .dates{font-weight:700;color:var(--green)}
+    .day-list{display:grid;gap:14px}
+    .day{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .day-head{padding:17px 18px;background:linear-gradient(90deg,#e5ece3,#f8f4e9);display:flex;justify-content:space-between;gap:12px;align-items:start}
+    .day-head h3{margin:0;font-size:1.15rem}
+    .day-head p{margin:3px 0 0;color:var(--muted);font-size:.91rem}
+    .day-badge{white-space:nowrap;border-radius:999px;background:#fffefa;border:1px solid #d9e0d6;padding:4px 9px;font-size:.78rem;color:var(--green);font-weight:700}
+    .day-body{padding:10px 18px 18px}
+    .event{display:grid;grid-template-columns:94px 1fr;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+    .event:last-child{border-bottom:0}
+    .time{font-size:.86rem;font-weight:800;color:var(--rust);padding-top:2px}
+    .event h4{margin:0 0 4px;font-size:1rem}
+    .event p{margin:4px 0;color:#4f5e56;font-size:.93rem;white-space:pre-wrap}
+    .event-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .event-links a{font-size:.85rem;background:#edf2eb;border-radius:8px;padding:4px 8px;text-decoration:none}
+    .event-note{margin-top:9px;padding:9px 11px;background:#f8f3e8;border-left:3px solid var(--gold);border-radius:7px;font-size:.88rem;white-space:pre-wrap}
+    .event-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+    .mini{font-size:.82rem;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;color:var(--ink)}
+    .empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+    .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+    .panel h2{font-size:1.12rem;margin:0 0 10px}
+    .checklist{display:grid;gap:9px}
+    .check-row{display:flex;align-items:start;gap:9px;font-size:.92rem}
+    .check-row input{margin-top:6px;accent-color:var(--green)}
+    .links-list{display:grid;gap:8px}
+    .links-list a{display:block;padding:9px 11px;border-radius:10px;background:#edf2eb;text-decoration:none;font-size:.91rem}
+    footer{text-align:center;color:var(--muted);font-size:.82rem;padding:25px 12px 5px}
+    dialog{border:0;border-radius:18px;padding:0;width:min(620px,calc(100% - 24px));max-height:90vh;box-shadow:0 24px 80px #18251f55}
+    dialog::backdrop{background:#17251fc2}
+    .modal-head{padding:17px 20px;background:#e5ece3;display:flex;align-items:center;justify-content:space-between}
+    .modal-head h2{font-size:1.15rem;margin:0}
+    .modal-body{padding:18px 20px;overflow:auto;max-height:calc(90vh - 140px)}
+    .field{display:grid;gap:5px;margin-bottom:13px}
+    .field label{font-weight:700;font-size:.9rem}
+    .field input,.field textarea,.field select{width:100%;border:1px solid #d7dcd5;border-radius:10px;padding:10px;background:white;color:var(--ink)}
+    .field textarea{min-height:90px;resize:vertical}
+    .field-help{font-size:.8rem;color:var(--muted)}
+    .modal-foot{padding:13px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .hide{display:none!important}
+    @media(max-width:760px){
+      .hotel-grid{grid-template-columns:1fr}
+      .bottom-grid{grid-template-columns:1fr}
+      .toolbar{align-items:stretch}
+      .actions{width:100%}.actions .btn{flex:1}
+      .event{grid-template-columns:76px 1fr;gap:8px}
+      .day-head{padding:14px}.day-body{padding:8px 14px 14px}
+      .form-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Autumn Journey · 2026</div>
+      <h1>名古屋・白川鄉・飛驒高山<br>慢遊手帳</h1>
+      <p>5日4夜｜2026年11月19日（四）— 11月23日（一）</p>
+      <p>3人同行・慢慢行、慢慢睇，舒服最重要。</p>
+      <div class="hero-meta">
+        <span class="pill">🍁 秋日慢遊</span>
+        <span class="pill">🏨 3間酒店</span>
+        <span class="pill">🚆 JR＋高速巴士</span>
+        <span class="pill">📝 行程可編輯</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <nav class="nav" aria-label="頁面導覽">
+        <a href="#hotels">住宿</a><a href="#itinerary">每日行程</a><a href="#checklist">準備清單</a><a href="#useful-links">實用連結</a>
+      </nav>
+      <div class="actions">
+        <button class="btn" id="addEventBtn">＋ 新增行程項目</button>
+        <button class="btn secondary" id="settingsBtn">Firebase 設定</button>
+      </div>
+    </div>
+
+    <div class="notice" id="modeNotice">
+      <strong>目前為本機預覽模式。</strong> 你可以先試用新增、編輯及備註功能；設定 Firebase 後，資料才會同步到不同手機／電腦。
+    </div>
+    <div class="status" id="status" role="status">正在載入行程…</div>
+
+    <section id="hotels">
+      <div class="section-head">
+        <div><h2>🏨 住宿安排</h2><p>住宿日期已按目前提供的資料預填；可按「編輯」修改。</p></div>
+        <button class="btn outline" id="addHotelBtn">＋ 新增住宿</button>
+      </div>
+      <div class="hotel-grid" id="hotelGrid"></div>
+    </section>
+
+    <section id="itinerary">
+      <div class="section-head">
+        <div><h2>🗓️ 每日行程</h2><p>時間、交通、景點介紹、備註及網址都可以自行加減。</p></div>
+      </div>
+      <div class="day-list" id="dayList"></div>
+    </section>
+
+    <div class="bottom-grid">
+      <section class="panel" id="checklist">
+        <h2>☑️ 出發前準備清單</h2>
+        <div class="checklist" id="checklistItems"></div>
+        <div class="field" style="margin-top:14px;margin-bottom:0">
+          <label for="newCheck">新增清單項目</label>
+          <div style="display:flex;gap:7px"><input id="newCheck" placeholder="例如：確認酒店早餐時間"><button class="btn" id="addCheckBtn">新增</button></div>
+        </div>
+      </section>
+      <section class="panel" id="useful-links">
+        <h2>🔗 實用官方連結</h2>
+        <div class="links-list" id="usefulLinks"></div>
+        <div class="field" style="margin-top:14px;margin-bottom:0">
+          <label>新增連結（名稱 | URL）</label>
+          <input id="newLinkTitle" placeholder="連結名稱，例如：酒店官方網站">
+          <input id="newLinkUrl" placeholder="https://..." style="margin-top:6px">
+          <button class="btn" id="addLinkBtn" style="margin-top:7px">新增連結</button>
+        </div>
+      </section>
+    </div>
+    <footer>名古屋・白川鄉・飛驒高山慢遊手帳｜行程時間為規劃參考，出發前請核實交通及景點最新資料。</footer>
+  </main>
+
+  <dialog id="eventDialog">
+    <form id="eventForm">
+      <div class="modal-head"><h2 id="eventDialogTitle">新增行程項目</h2><button type="button" class="btn outline" data-close="eventDialog">關閉</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="eventId">
+        <div class="form-grid">
+          <div class="field"><label for="eventDay">日期</label><select id="eventDay" required>
+            <option value="2026-11-19">11/19（四）Day 1</option><option value="2026-11-20">11/20（五）Day 2</option><option value="2026-11-21">11/21（六）Day 3</option><option value="2026-11-22">11/22（日）Day 4</option><option value="2026-11-23">11/23（一）Day 5</option>
+          </select></div>
+          <div class="field"><label for="eventTime">時間</label><input id="eventTime" placeholder="例如：09:00–10:30"></div>
+        </div>
+        <div class="field"><label for="eventTitle">項目名稱 *</label><input id="eventTitle" required placeholder="例如：白川鄉合掌村"></div>
+        <div class="field"><label for="eventCategory">類別</label><select id="eventCategory"><option>景點</option><option>交通</option><option>餐飲</option><option>住宿</option><option>備註</option><option>購物</option></select></div>
+        <div class="field"><label for="eventDesc">詳細資料／景點介紹／交通方法</label><textarea id="eventDesc" placeholder="寫下景點特色、由上一站點樣去、車程、步行、票價或注意事項…"></textarea></div>
+        <div class="field"><label for="eventNote">個人備註</label><textarea id="eventNote" placeholder="例如：長者行累就休息；需要預約；餐廳電話…"></textarea></div>
+        <div class="field"><label for="eventLinks">相關連結（每行一個，格式：名稱 | URL）</label><textarea id="eventLinks" placeholder="官方網站 | https://example.com&#10;Google Maps | https://maps.google.com"></textarea><div class="field-help">只會開啟 http:// 或 https:// 網址。</div></div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn danger hide" id="deleteEventBtn">刪除項目</button><div style="display:flex;gap:8px;margin-left:auto"><button type="button" class="btn outline" data-close="eventDialog">取消</button><button type="submit" class="btn">儲存項目</button></div></div>
+    </form>
+  </dialog>
+
+  <dialog id="hotelDialog">
+    <form id="hotelForm">
+      <div class="modal-head"><h2 id="hotelDialogTitle">編輯住宿</h2><button type="button" class="btn outline" data-close="hotelDialog">關閉</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="hotelId">
+        <div class="field"><label for="hotelName">酒店名稱 *</label><input id="hotelName" required></div>
+        <div class="form-grid">
+          <div class="field"><label for="hotelCheckin">入住日期</label><input id="hotelCheckin" type="date" required></div>
+          <div class="field"><label for="hotelCheckout">退房日期</label><input id="hotelCheckout" type="date" required></div>
+        </div>
+        <div class="field"><label for="hotelAddress">地址／交通位置</label><input id="hotelAddress" placeholder="酒店地址或最近車站"></div>
+        <div class="field"><label for="hotelInfo">房型、訂單資料摘要、備註</label><textarea id="hotelInfo" placeholder="請勿輸入信用卡號、密碼等敏感資料"></textarea></div>
+        <div class="field"><label for="hotelUrl">酒店／訂房連結</label><input id="hotelUrl" placeholder="https://..."></div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn danger hide" id="deleteHotelBtn">刪除住宿</button><div style="display:flex;gap:8px;margin-left:auto"><button type="button" class="btn outline" data-close="hotelDialog">取消</button><button type="submit" class="btn">儲存住宿</button></div></div>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog">
+    <form id="settingsForm">
+      <div class="modal-head"><h2>Firebase 設定</h2><button type="button" class="btn outline" data-close="settingsDialog">關閉</button></div>
+      <div class="modal-body">
+        <p style="margin-top:0;color:var(--muted)">填入 Firebase 專案的 Web App 設定，並啟用 Cloud Firestore。設定會保存在目前瀏覽器的 localStorage；不要將服務帳戶私鑰放入網頁。</p>
+        <div class="field"><label for="firebaseApiKey">apiKey</label><input id="firebaseApiKey" autocomplete="off"></div>
+        <div class="field"><label for="firebaseAuthDomain">authDomain</label><input id="firebaseAuthDomain" placeholder="your-project.firebaseapp.com"></div>
+        <div class="field"><label for="firebaseProjectId">projectId</label><input id="firebaseProjectId"></div>
+        <div class="field"><label for="firebaseAppId">appId</label><input id="firebaseAppId"></div>
+        <div class="notice">多人共同編輯時，請設定 Firebase Authentication（例如 Google 登入）及 Firestore 安全規則。此簡易版本不含登入，若 Firestore 開放匿名讀寫，任何知道專案設定的人都可能修改資料；正式使用前應加上身份驗證和規則。</div>
+        <div class="field"><label class="check-row"><input id="firebaseEnable" type="checkbox">啟用 Firestore 雲端同步</label></div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn outline" id="clearFirebaseBtn">清除設定</button><div style="display:flex;gap:8px;margin-left:auto"><button type="button" class="btn outline" data-close="settingsDialog">取消</button><button type="submit" class="btn">儲存設定並連線</button></div></div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    const DAYS = [
+      {date:"2026-11-19",label:"Day 1｜11月19日（四）",route:"香港 → 名古屋",hotel:"名古屋萬豪酒店"},
+      {date:"2026-11-20",label:"Day 2｜11月20日（五）",route:"名古屋 → 白川鄉 → 飛驒高山",hotel:"HOTEL AMANEK 飛驒高山"},
+      {date:"2026-11-21",label:"Day 3｜11月21日（六）",route:"高山慢遊 → JR 返回名古屋",hotel:"ANA 皇冠假日飯店 名古屋格蘭德苑"},
+      {date:"2026-11-22",label:"Day 4｜11月22日（日）",route:"德川園 → AEON Mall 購物",hotel:"ANA 皇冠假日飯店 名古屋格蘭德苑"},
+      {date:"2026-11-23",label:"Day 5｜11月23日（一）",route:"名古屋 → 中部國際機場 → 香港",hotel:"—"}
+    ];
+    const seedHotels = [
+      {id:"h1",name:"名古屋萬豪酒店",checkin:"2026-11-19",checkout:"2026-11-20",address:"JR 名古屋站上方／直連名古屋站",info:"1晚。確認3人房型、床型、早餐及退房時間。",url:"https://www.marriott.com/"},
+      {id:"h2",name:"HOTEL AMANEK 飛驒高山",checkin:"2026-11-20",checkout:"2026-11-21",address:"高山站東口附近，步行約3分鐘",info:"1晚。確認行李寄存、早餐及房型。",url:"https://amanekhotels.jp/"},
+      {id:"h3",name:"ANA 皇冠假日飯店 名古屋格蘭德苑",checkin:"2026-11-21",checkout:"2026-11-23",address:"金山站南口附近，步行約1分鐘",info:"連住2晚。確認3人入住、床型及早餐。",url:"https://www.anacrowneplaza-nagoya.jp/"}
+    ];
+    const seedEvents = [
+      {id:"e1",day:"2026-11-19",time:"14:30",title:"抵達中部國際機場",category:"交通",desc:"預計14:30抵達 NGO。入境、取行李後，乘名鐵前往名鐵名古屋站，再步行至 JR 名古屋站上方的酒店。機場至名古屋站車程約30–40分鐘，另預留等車及站內步行時間。",note:"第一晚以休息為主。",links:[{title:"名鐵官方網站",url:"https://www.meitetsu.co.jp/"}]},
+      {id:"e2",day:"2026-11-19",time:"傍晚",title:"名古屋站附近晚餐",category:"餐飲",desc:"可選車站商場或地下街內的日式定食、烏冬、味噌豬排等。",note:"不安排遠距離景點。",links:[]},
+      {id:"e3",day:"2026-11-20",time:"07:30",title:"酒店早餐、退房",category:"住宿",desc:"帶齊行李離開名古屋萬豪酒店。先確認前往名鐵巴士中心的站內步行路線。",note:"建議預留時間，不要臨近開車才到。",links:[]},
+      {id:"e4",day:"2026-11-20",time:"08:00",title:"前往名鐵巴士中心",category:"交通",desc:"由名古屋站一帶步行前往名鐵巴士中心，預留約15–25分鐘找路、確認月台及使用洗手間。",note:"",links:[{title:"名鐵巴士：白川鄉路線",url:"https://www.meitetsu-bus.co.jp/express/shirakawagou/"}]},
+      {id:"e5",day:"2026-11-20",time:"08:50–11:30",title:"名古屋 → 白川鄉",category:"交通",desc:"預計乘預約制高速巴士前往白川鄉，車程約2小時40分鐘。此為規劃時間，實際班次、抵達時間及座位以訂票結果為準。",note:"務必預訂3個座位。",links:[{title:"名鐵巴士官方路線",url:"https://www.meitetsu-bus.co.jp/express/shirakawagou/"}]},
+      {id:"e6",day:"2026-11-20",time:"11:30–12:30",title:"白川鄉午餐、洗手間及行李安排",category:"餐飲",desc:"抵達後先處理行李寄存，再在村內或巴士總站附近用午餐。",note:"先確認寄存位置及營業時間，不要假設住宿可提早收行李。",links:[{title:"白川鄉觀光協會",url:"https://shirakawa-go.gr.jp/"}]},
+      {id:"e7",day:"2026-11-20",time:"12:30–14:45",title:"白川鄉荻町合掌村慢遊",category:"景點",desc:"欣賞傳統合掌造房屋、山村景觀及保存完整的傳統聚落。沿主要村路慢慢行，選一兩個位置拍照、逛手信店。村內部分路面不平，穿防滑鞋，不必行完整個村。",note:"城山展望台只作可選項目；要先核實接駁車當日營運，並預留回巴士站時間。",links:[{title:"白川鄉觀光協會",url:"https://shirakawa-go.gr.jp/"}]},
+      {id:"e8",day:"2026-11-20",time:"約15:00–16:30",title:"白川鄉 → 飛驒高山",category:"交通",desc:"乘預先訂好的直達巴士到高山濃飛巴士中心，車程約50分鐘至1小時，視班次及路況而定。",note:"先確認11月20日實際班次及3個座位。",links:[{title:"濃飛巴士官方網站",url:"https://www.nouhibus.co.jp/"}]},
+      {id:"e9",day:"2026-11-20",time:"約16:00後",title:"入住 HOTEL AMANEK 飛驒高山",category:"住宿",desc:"酒店位於高山站東口附近。入住後休息，晚上在車站附近用餐，可考慮飛驒牛料理或日式定食。",note:"確認早餐、行李及房型安排。",links:[{title:"酒店官方網站",url:"https://amanekhotels.jp/"}]},
+      {id:"e10",day:"2026-11-21",time:"07:30–08:30",title:"早餐、退房及寄存行李",category:"住宿",desc:"先問酒店可否退房後寄存行李；如不可以，可查詢高山站或巴士中心的儲物櫃。",note:"確認儲物櫃尺寸能否放入行李。",links:[]},
+      {id:"e11",day:"2026-11-21",time:"08:30–09:30",title:"宮川朝市（可選）",category:"景點",desc:"感受當地早市氣氛，逛小食、農產品及手信攤位。11月早上可能寒冷，戶外活動以30–45分鐘為宜。",note:"落雨、太凍或體力不足時可略過。",links:[{title:"高山市官方觀光資訊",url:"https://www.hidatakayama.or.jp/"}]},
+      {id:"e12",day:"2026-11-21",time:"09:30–11:15",title:"三町古街 Sanmachi Suji",category:"景點",desc:"欣賞傳統木造商店、古老街道、和菓子及地方手信。由高山站步行約10分鐘，實際視乎酒店位置及行走速度。",note:"只揀一段古街慢慢逛，預留咖啡或休息時間。",links:[{title:"高山市官方觀光資訊",url:"https://www.hidatakayama.or.jp/"}]},
+      {id:"e13",day:"2026-11-21",time:"11:15–12:00",title:"午餐、取行李及前往 JR 高山站",category:"餐飲",desc:"建議在高山站附近用午餐，之後取回行李並前往 JR 月台。",note:"預留時間去洗手間及確認月台。",links:[]},
+      {id:"e14",day:"2026-11-21",time:"約12:30–15:00",title:"JR 特急「飛驒」：高山 → 名古屋",category:"交通",desc:"車程約2小時20分鐘至2小時40分鐘，實際依班次而異。時間只作規劃框架，需查11月21日實際時刻表及訂位情況。",note:"建議預訂3個指定席，並預先考慮大型行李擺放位置。",links:[{title:"JR 東海官方時刻表",url:"https://global.jr-central.co.jp/en/info/timetable/index.html"}]},
+      {id:"e15",day:"2026-11-21",time:"下午",title:"名古屋站 → 金山站 → 酒店",category:"交通",desc:"由 JR 名古屋站乘 JR 東海道本線或中央本線到金山站，車程約5分鐘；再由金山站南口步行約1分鐘到 ANA 皇冠假日飯店。",note:"入住後休息，晚上在金山站附近用餐。",links:[{title:"ANA 皇冠假日飯店交通",url:"https://www.anacrowneplaza-nagoya.jp/pages/access"}]},
+      {id:"e16",day:"2026-11-22",time:"08:30–09:30",title:"酒店早餐",category:"餐飲",desc:"早餐後確認德川園當日開園情況及交通路線。",note:"",links:[]},
+      {id:"e17",day:"2026-11-22",time:"10:00–12:00",title:"德川園 Tokugawaen",category:"景點",desc:"日式池泉迴遊庭園、池塘、石橋及季節植物。交通可由金山站搭 JR 至名古屋站，再轉 JR 中央本線至大曾根站後步行；如想減少轉乘及步行，可考慮的士直達。",note:"庭園步道有高低變化；視乎體力縮短路線。出發前確認開園及紅葉情況。",links:[{title:"德川園官方網站",url:"https://www.tokugawaen.aichi.jp/"}]},
+      {id:"e18",day:"2026-11-22",time:"12:00–13:00",title:"午餐及休息",category:"餐飲",desc:"在庭園附近或名古屋站一帶用餐，預留至少45分鐘坐低休息。",note:"",links:[]},
+      {id:"e19",day:"2026-11-22",time:"13:30–16:30",title:"AEON Mall Nagoya Noritake Garden",category:"購物",desc:"購物目標：MUJI 無印良品、UNIQLO；亦有餐飲及休息區。可由名古屋站步行前往，或按當日情況搭市營巴士。",note:"如果早上行得攰，可以縮短庭園時間，將下午留畀室內購物。",links:[{title:"AEON Mall 官方交通資訊",url:"https://nagoya-noritake-garden.aeonmall.jp/access"}]},
+      {id:"e20",day:"2026-11-22",time:"16:30後",title:"返回金山酒店、晚餐及整理行李",category:"交通",desc:"由商場返回名古屋站，再乘 JR 至金山站；如購物後疲倦，可考慮的士返酒店。",note:"最後一晚整理行李，準備翌日往機場。",links:[]},
+      {id:"e21",day:"2026-11-23",time:"08:30–10:30",title:"早餐、退房及整理行李",category:"住宿",desc:"檢查護照、機票、行李及手信，不安排正式景點。",note:"",links:[]},
+      {id:"e22",day:"2026-11-23",time:"約12:00–12:30",title:"金山站 → 中部國際機場",category:"交通",desc:"乘名鐵前往中部國際機場，車程一般約25–35分鐘，視列車種類及停站而定。預留時間等車、步行及辦理登機。",note:"按航空公司報到要求及當日班次調整出發時間。",links:[{title:"名鐵官方網站",url:"https://www.meitetsu.co.jp/"}]},
+      {id:"e23",day:"2026-11-23",time:"15:25",title:"航班返香港",category:"交通",desc:"預計15:25起飛、19:15抵達香港；以航空公司最終航班資料為準。",note:"",links:[]}
+    ];
+    const seedChecks = [
+      {id:"c1",text:"預訂名古屋 → 白川鄉高速巴士",done:false},
+      {id:"c2",text:"預訂白川鄉 → 高山直達巴士",done:false},
+      {id:"c3",text:"預訂高山 → 名古屋 JR 特急「飛驒」指定席",done:false},
+      {id:"c4",text:"確認白川鄉行李寄存安排",done:false},
+      {id:"c5",text:"確認高山酒店退房後寄存行李安排",done:false},
+      {id:"c6",text:"確認三間酒店房型、床型及早餐",done:false},
+      {id:"c7",text:"出發前查德川園開放時間及紅葉情況",done:false},
+      {id:"c8",text:"準備保暖衣物、防滑鞋及雨具",done:false},
+      {id:"c9",text:"確認11月23日名鐵往機場班次",done:false}
+    ];
+    const seedLinks = [
+      {id:"l1",title:"名鐵巴士：白川鄉路線",url:"https://www.meitetsu-bus.co.jp/express/shirakawagou/"},
+      {id:"l2",title:"濃飛巴士官方網站",url:"https://www.nouhibus.co.jp/"},
+      {id:"l3",title:"JR 東海時刻表",url:"https://global.jr-central.co.jp/en/info/timetable/index.html"},
+      {id:"l4",title:"白川鄉觀光協會",url:"https://shirakawa-go.gr.jp/"},
+      {id:"l5",title:"高山市觀光資訊",url:"https://www.hidatakayama.or.jp/"},
+      {id:"l6",title:"德川園官方網站",url:"https://www.tokugawaen.aichi.jp/"},
+      {id:"l7",title:"AEON Mall Noritake 官方交通資訊",url:"https://nagoya-noritake-garden.aeonmall.jp/access"}
+    ];
+    const $ = id => document.getElementById(id);
+    const statusEl = $("status");
+    const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const safeUrl = u => {try{const x=new URL(u);return ["http:","https:"].includes(x.protocol)?x.href:""}catch{return ""}};
+    const makeId = () => (crypto.randomUUID ? crypto.randomUUID() : "id"+Date.now()+Math.random().toString(16).slice(2));
+    let hotels = structuredClone(seedHotels), events = structuredClone(seedEvents), checks = structuredClone(seedChecks), usefulLinks = structuredClone(seedLinks);
+    let cloud = null, unsubs = [], remoteReady = false;
+    const LOCAL_KEY = "nagoyaSlowTripV14";
+    function setStatus(msg){statusEl.textContent=msg}
+    function readLocal(){try{const x=JSON.parse(localStorage.getItem(LOCAL_KEY)||"null");if(x){hotels=x.hotels||hotels;events=x.events||events;checks=x.checks||checks;usefulLinks=x.usefulLinks||usefulLinks}}catch{}}
+    function saveLocal(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify({hotels,events,checks,usefulLinks}))}catch{}}
+    function persistStatus(){saveLocal();if(cloud){setStatus("Firebase 已連線；變更會同步到雲端。")}else{setStatus("本機已儲存變更（只在此瀏覽器）；設定 Firebase 後才會跨裝置同步。")}}
+    function sortEvents(a,b){return a.day.localeCompare(b.day)||a.time.localeCompare(b.time)}
+    function renderHotels(){
+      const grid=$("hotelGrid");
+      if(!hotels.length){grid.innerHTML='<div class="empty">尚未新增住宿。</div>';return}
+      grid.innerHTML=hotels.slice().sort((a,b)=>a.checkin.localeCompare(b.checkin)).map((h,i)=>`
+        <article class="hotel">
+          <div class="num">STAY ${String(i+1).padStart(2,"0")}</div>
+          <h3>${esc(h.name)}</h3>
+          <p class="dates">${esc(h.checkin)} → ${esc(h.checkout)}</p>
+          <p>${esc(h.address||"未填地址")}</p>
+          <p>${esc(h.info||"")}</p>
+          ${safeUrl(h.url)?`<p><a href="${esc(safeUrl(h.url))}" target="_blank" rel="noopener">酒店／訂房連結 ↗</a></p>`:""}
+          <div class="event-tools"><button class="mini" data-edit-hotel="${esc(h.id)}">編輯住宿</button><button class="mini" data-delete-hotel="${esc(h.id)}">刪除</button></div>
+        </article>`).join("");
+    }
+    function renderEvents(){
+      const list=$("dayList");
+      list.innerHTML=DAYS.map(d=>{
+        const dayEvents=events.filter(e=>e.day===d.date).sort(sortEvents);
+        return `<article class="day"><div class="day-head"><div><h3>${esc(d.label)}</h3><p>${esc(d.route)}</p></div><span class="day-badge">${esc(d.hotel)}</span></div><div class="day-body">
+        ${dayEvents.length?dayEvents.map(e=>`<div class="event"><div class="time">${esc(e.time||"時間待定")}</div><div><h4>${esc(e.title)} <span style="font-size:.76rem;color:#8a7864;font-weight:500">· ${esc(e.category||"行程")}</span></h4>
+        ${e.desc?`<p>${esc(e.desc)}</p>`:""}${e.note?`<div class="event-note">📝 ${esc(e.note)}</div>`:""}
+        ${(e.links||[]).filter(l=>safeUrl(l.url)).length?`<div class="event-links">${e.links.filter(l=>safeUrl(l.url)).map(l=>`<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.title||l.url)} ↗</a>`).join("")}</div>`:""}
+        <div class="event-tools"><button class="mini" data-edit-event="${esc(e.id)}">編輯／加備註</button><button class="mini" data-delete-event="${esc(e.id)}">刪除</button></div></div></div>`).join(""):'<div class="empty">今日尚未有行程項目，可按「新增行程項目」加入。</div>'}
+        <button class="mini" data-add-day="${esc(d.date)}">＋ 為此日新增項目</button></div></article>`;
+      }).join("");
+    }
+    function renderChecks(){
+      $("checklistItems").innerHTML=checks.map(c=>`<label class="check-row"><input type="checkbox" data-check="${esc(c.id)}" ${c.done?"checked":""}><span style="${c.done?"text-decoration:line-through;color:#89918b":""}">${esc(c.text)}</span><button type="button" class="mini" data-delete-check="${esc(c.id)}" style="margin-left:auto">刪除</button></label>`).join("");
+    }
+    function renderLinks(){
+      $("usefulLinks").innerHTML=usefulLinks.map(l=>`<div style="display:flex;gap:7px;align-items:center"><a style="flex:1" href="${esc(safeUrl(l.url)||"#")}" target="_blank" rel="noopener">${esc(l.title)} ↗</a><button class="mini" data-delete-link="${esc(l.id)}">刪除</button></div>`).join("");
+    }
+    function renderAll(){renderHotels();renderEvents();renderChecks();renderLinks()}
+    function openEvent(e=null,day=null){
+      $("eventForm").reset();$("eventId").value=e?.id||"";$("eventDialogTitle").textContent=e?"編輯行程項目":"新增行程項目";
+      $("eventDay").value=e?.day||day||"2026-11-19";$("eventTime").value=e?.time||"";$("eventTitle").value=e?.title||"";$("eventCategory").value=e?.category||"景點";$("eventDesc").value=e?.desc||"";$("eventNote").value=e?.note||"";
+      $("eventLinks").value=(e?.links||[]).map(l=>`${l.title} | ${l.url}`).join("\n");$("deleteEventBtn").classList.toggle("hide",!e);$("eventDialog").showModal();
+    }
+    function openHotel(h=null){
+      $("hotelForm").reset();$("hotelId").value=h?.id||"";$("hotelDialogTitle").textContent=h?"編輯住宿":"新增住宿";
+      ["Name","Checkin","Checkout","Address","Info","Url"].forEach(k=>{$("hotel"+k).value=h?.[({Name:"name",Checkin:"checkin",Checkout:"checkout",Address:"address",Info:"info",Url:"url"})[k]]||""});
+      $("deleteHotelBtn").classList.toggle("hide",!h);$("hotelDialog").showModal();
+    }
+    async function commit(){
+      persistStatus();
+      if(cloud){try{await cloud.saveAll({hotels,events,checks,usefulLinks});setStatus("Firebase 雲端同步完成。")}catch(err){setStatus("本機已儲存，但 Firebase 同步失敗："+err.message)}}
+      renderAll();
+    }
+    $("addEventBtn").onclick=()=>openEvent();
+    $("addHotelBtn").onclick=()=>openHotel();
+    $("settingsBtn").onclick=()=>{const cfg=JSON.parse(localStorage.getItem("nagoyaFirebaseConfig")||"{}");$("firebaseApiKey").value=cfg.apiKey||"";$("firebaseAuthDomain").value=cfg.authDomain||"";$("firebaseProjectId").value=cfg.projectId||"";$("firebaseAppId").value=cfg.appId||"";$("firebaseEnable").checked=!!cfg.enabled;$("settingsDialog").showModal()};
+    document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).close()));
+    $("eventForm").addEventListener("submit",async ev=>{
+      ev.preventDefault();const id=$("eventId").value||makeId();const links=$("eventLinks").value.split("\n").map(line=>{const i=line.indexOf("|");return i<0?{title:line.trim(),url:line.trim()}:{title:line.slice(0,i).trim(),url:line.slice(i+1).trim()}}).filter(l=>l.title&&safeUrl(l.url));
+      const item={id,day:$("eventDay").value,time:$("eventTime").value.trim(),title:$("eventTitle").value.trim(),category:$("eventCategory").value,desc:$("eventDesc").value.trim(),note:$("eventNote").value.trim(),links};
+      const idx=events.findIndex(x=>x.id===id);if(idx>=0)events[idx]=item;else events.push(item);$("eventDialog").close();await commit();
+    });
+    $("deleteEventBtn").onclick=async()=>{const id=$("eventId").value;if(confirm("確定刪除這個行程項目？")){events=events.filter(e=>e.id!==id);$("eventDialog").close();await commit()}};
+    $("hotelForm").addEventListener("submit",async ev=>{
+      ev.preventDefault();const id=$("hotelId").value||makeId();const h={id,name:$("hotelName").value.trim(),checkin:$("hotelCheckin").value,checkout:$("hotelCheckout").value,address:$("hotelAddress").value.trim(),info:$("hotelInfo").value.trim(),url:$("hotelUrl").value.trim()};
+      const idx=hotels.findIndex(x=>x.id===id);if(idx>=0)hotels[idx]=h;else hotels.push(h);$("hotelDialog").close();await commit();
+    });
+    $("deleteHotelBtn").onclick=async()=>{const id=$("hotelId").value;if(confirm("確定刪除這間住宿？")){hotels=hotels.filter(h=>h.id!==id);$("hotelDialog").close();await commit()}};
+    $("dayList").addEventListener("click",e=>{
+      const b=e.target.closest("button");if(!b)return;
+      if(b.dataset.editEvent){const item=events.find(x=>x.id===b.dataset.editEvent);if(item)openEvent(item)}
+      if(b.dataset.addDay)openEvent(null,b.dataset.addDay);
+      if(b.dataset.deleteEvent){const id=b.dataset.deleteEvent;if(confirm("確定刪除這個行程項目？")){events=events.filter(x=>x.id!==id);commit()}}
+    });
+    $("hotelGrid").addEventListener("click",e=>{
+      const b=e.target.closest("button");if(!b)return;
+      if(b.dataset.editHotel){const h=hotels.find(x=>x.id===b.dataset.editHotel);if(h)openHotel(h)}
+      if(b.dataset.deleteHotel){const id=b.dataset.deleteHotel;if(confirm("確定刪除這間住宿？")){hotels=hotels.filter(x=>x.id!==id);commit()}}
+    });
+    $("checklistItems").addEventListener("change",e=>{if(e.target.dataset.check){const c=checks.find(x=>x.id===e.target.dataset.check);if(c){c.done=e.target.checked;commit()}}});
+    $("checklistItems").addEventListener("click",e=>{const b=e.target.closest("[data-delete-check]");if(b){checks=checks.filter(c=>c.id!==b.dataset.deleteCheck);commit()}});
+    $("addCheckBtn").onclick=async()=>{const text=$("newCheck").value.trim();if(text){checks.push({id:makeId(),text,done:false});$("newCheck").value="";await commit()}};
+    $("addLinkBtn").onclick=async()=>{const title=$("newLinkTitle").value.trim(),url=$("newLinkUrl").value.trim();if(!title||!safeUrl(url)){alert("請輸入連結名稱及有效的 http/https 網址。");return}usefulLinks.push({id:makeId(),title,url});$("newLinkTitle").value="";$("newLinkUrl").value="";await commit()};
+    $("usefulLinks").addEventListener("click",e=>{const b=e.target.closest("[data-delete-link]");if(b){usefulLinks=usefulLinks.filter(l=>l.id!==b.dataset.deleteLink);commit()}});
+    $("clearFirebaseBtn").onclick=()=>{if(confirm("清除目前瀏覽器內的 Firebase 設定？")){localStorage.removeItem("nagoyaFirebaseConfig");$("firebaseEnable").checked=false;$("firebaseApiKey").value="";$("firebaseAuthDomain").value="";$("firebaseProjectId").value="";$("firebaseAppId").value="";cloud=null;setStatus("已清除 Firebase 設定，現在使用本機模式。")}};
+    $("settingsForm").addEventListener("submit",async ev=>{
+      ev.preventDefault();const cfg={apiKey:$("firebaseApiKey").value.trim(),authDomain:$("firebaseAuthDomain").value.trim(),projectId:$("firebaseProjectId").value.trim(),appId:$("firebaseAppId").value.trim(),enabled:$("firebaseEnable").checked};
+      localStorage.setItem("nagoyaFirebaseConfig",JSON.stringify(cfg));$("settingsDialog").close();
+      if(cfg.enabled){await connectFirebase(cfg)}else{cloud=null;setStatus("已儲存設定；目前使用本機模式。")}
+    });
+    async function connectFirebase(cfg){
+      if(!cfg.apiKey||!cfg.projectId||!cfg.appId){setStatus("Firebase 設定未完整，請填入 apiKey、projectId 及 appId。");return}
+      try{
+        setStatus("正在連接 Firebase…");
+        const {initializeApp,getApps}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+        const {getFirestore,doc,getDoc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+        const app=getApps().find(a=>a.name==="nagoya-trip")||initializeApp({apiKey:cfg.apiKey,authDomain:cfg.authDomain,projectId:cfg.projectId,appId:cfg.appId},"nagoya-trip");
+        const db=getFirestore(app), ref=doc(db,"tripData","nagoya-2026");
+        cloud={saveAll:async data=>setDoc(ref,{...data,updatedAt:new Date().toISOString()}),load:async()=>{const snap=await getDoc(ref);return snap.exists()?snap.data():null}};
+        const data=await cloud.load();
+        if(data&&confirm("Firebase 已有行程資料。要載入雲端資料取代目前畫面內容嗎？")){hotels=data.hotels||hotels;events=data.events||events;checks=data.checks||checks;usefulLinks=data.usefulLinks||usefulLinks;saveLocal();renderAll()}
+        else if(!data){await cloud.saveAll({hotels,events,checks,usefulLinks})}
+        $("modeNotice").innerHTML="<strong>Firebase 已設定。</strong> 資料會同步到此 Firebase 專案；多人使用前請先設定登入驗證及 Firestore 安全規則。";
+        setStatus("Firebase 連線成功。");
+      }catch(err){cloud=null;setStatus("Firebase 連線失敗："+err.message+"。請檢查設定、Firestore 是否已建立及安全規則。")}
+    }
+    readLocal();renderAll();setStatus("本機預覽模式：新增／編輯內容會保存在此瀏覽器。");
+    const existing=JSON.parse(localStorage.getItem("nagoyaFirebaseConfig")||"null");
+    if(existing?.enabled)connectFirebase(existing);
+  </script>
+</body>
+    </html>
