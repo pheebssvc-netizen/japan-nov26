@@ -208,7 +208,7 @@
     <form id="settingsForm">
       <div class="modal-head"><h2>Firebase 設定</h2><button type="button" class="btn outline" data-close="settingsDialog">關閉</button></div>
       <div class="modal-body">
-        <p style="margin-top:0;color:var(--muted)">填入 Firebase 專案的 Web App 設定，並啟用 Cloud Firestore。設定會保存在目前瀏覽器的 localStorage；不要將服務帳戶私鑰放入網頁。</p>
+        <p style="margin-top:0;color:var(--muted)">以下已預填你嘅 Firebase 專案設定。確認啟用後，資料會同步到 Cloud Firestore。設定會保存在目前瀏覽器的 localStorage；不要將服務帳戶私鑰放入網頁。</p>
         <div class="field"><label for="firebaseApiKey">apiKey</label><input id="firebaseApiKey" autocomplete="off"></div>
         <div class="field"><label for="firebaseAuthDomain">authDomain</label><input id="firebaseAuthDomain" placeholder="your-project.firebaseapp.com"></div>
         <div class="field"><label for="firebaseProjectId">projectId</label><input id="firebaseProjectId"></div>
@@ -278,19 +278,32 @@
       {id:"l6",title:"德川園官方網站",url:"https://www.tokugawaen.aichi.jp/"},
       {id:"l7",title:"AEON Mall Noritake 官方交通資訊",url:"https://nagoya-noritake-garden.aeonmall.jp/access"}
     ];
+
+    /* ===== 已預填你嘅 Firebase 設定 ===== */
+    const DEFAULT_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAtthBBNoHJkN6B_e8DVjzDpK_eB0wfExo",
+      authDomain: "yunnan-trip-d5626.firebaseapp.com",
+      projectId: "yunnan-trip-d5626",
+      appId: "1:956753515518:web:12586ad55c62ddc63426af",
+      enabled: true
+    };
+
     const $ = id => document.getElementById(id);
     const statusEl = $("status");
     const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     const safeUrl = u => {try{const x=new URL(u);return ["http:","https:"].includes(x.protocol)?x.href:""}catch{return ""}};
     const makeId = () => (crypto.randomUUID ? crypto.randomUUID() : "id"+Date.now()+Math.random().toString(16).slice(2));
     let hotels = structuredClone(seedHotels), events = structuredClone(seedEvents), checks = structuredClone(seedChecks), usefulLinks = structuredClone(seedLinks);
-    let cloud = null, unsubs = [], remoteReady = false;
+    let cloud = null;
     const LOCAL_KEY = "nagoyaSlowTripV14";
+    const FB_CFG_KEY = "nagoyaFirebaseConfig";
+
     function setStatus(msg){statusEl.textContent=msg}
     function readLocal(){try{const x=JSON.parse(localStorage.getItem(LOCAL_KEY)||"null");if(x){hotels=x.hotels||hotels;events=x.events||events;checks=x.checks||checks;usefulLinks=x.usefulLinks||usefulLinks}}catch{}}
     function saveLocal(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify({hotels,events,checks,usefulLinks}))}catch{}}
     function persistStatus(){saveLocal();if(cloud){setStatus("Firebase 已連線；變更會同步到雲端。")}else{setStatus("本機已儲存變更（只在此瀏覽器）；設定 Firebase 後才會跨裝置同步。")}}
     function sortEvents(a,b){return a.day.localeCompare(b.day)||a.time.localeCompare(b.time)}
+
     function renderHotels(){
       const grid=$("hotelGrid");
       if(!hotels.length){grid.innerHTML='<div class="empty">尚未新增住宿。</div>';return}
@@ -324,6 +337,7 @@
       $("usefulLinks").innerHTML=usefulLinks.map(l=>`<div style="display:flex;gap:7px;align-items:center"><a style="flex:1" href="${esc(safeUrl(l.url)||"#")}" target="_blank" rel="noopener">${esc(l.title)} ↗</a><button class="mini" data-delete-link="${esc(l.id)}">刪除</button></div>`).join("");
     }
     function renderAll(){renderHotels();renderEvents();renderChecks();renderLinks()}
+
     function openEvent(e=null,day=null){
       $("eventForm").reset();$("eventId").value=e?.id||"";$("eventDialogTitle").textContent=e?"編輯行程項目":"新增行程項目";
       $("eventDay").value=e?.day||day||"2026-11-19";$("eventTime").value=e?.time||"";$("eventTitle").value=e?.title||"";$("eventCategory").value=e?.category||"景點";$("eventDesc").value=e?.desc||"";$("eventNote").value=e?.note||"";
@@ -334,15 +348,31 @@
       ["Name","Checkin","Checkout","Address","Info","Url"].forEach(k=>{$("hotel"+k).value=h?.[({Name:"name",Checkin:"checkin",Checkout:"checkout",Address:"address",Info:"info",Url:"url"})[k]]||""});
       $("deleteHotelBtn").classList.toggle("hide",!h);$("hotelDialog").showModal();
     }
+
+    function getStoredFbCfg(){
+      try{const raw=localStorage.getItem(FB_CFG_KEY);if(raw)return JSON.parse(raw)}catch{}
+      return null;
+    }
+    function loadFbCfgIntoForm(){
+      const cfg=getStoredFbCfg()||DEFAULT_FIREBASE_CONFIG;
+      $("firebaseApiKey").value=cfg.apiKey||"";
+      $("firebaseAuthDomain").value=cfg.authDomain||"";
+      $("firebaseProjectId").value=cfg.projectId||"";
+      $("firebaseAppId").value=cfg.appId||"";
+      $("firebaseEnable").checked=!!cfg.enabled;
+    }
+
     async function commit(){
       persistStatus();
       if(cloud){try{await cloud.saveAll({hotels,events,checks,usefulLinks});setStatus("Firebase 雲端同步完成。")}catch(err){setStatus("本機已儲存，但 Firebase 同步失敗："+err.message)}}
       renderAll();
     }
+
     $("addEventBtn").onclick=()=>openEvent();
     $("addHotelBtn").onclick=()=>openHotel();
-    $("settingsBtn").onclick=()=>{const cfg=JSON.parse(localStorage.getItem("nagoyaFirebaseConfig")||"{}");$("firebaseApiKey").value=cfg.apiKey||"";$("firebaseAuthDomain").value=cfg.authDomain||"";$("firebaseProjectId").value=cfg.projectId||"";$("firebaseAppId").value=cfg.appId||"";$("firebaseEnable").checked=!!cfg.enabled;$("settingsDialog").showModal()};
+    $("settingsBtn").onclick=()=>{loadFbCfgIntoForm();$("settingsDialog").showModal()};
     document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).close()));
+
     $("eventForm").addEventListener("submit",async ev=>{
       ev.preventDefault();const id=$("eventId").value||makeId();const links=$("eventLinks").value.split("\n").map(line=>{const i=line.indexOf("|");return i<0?{title:line.trim(),url:line.trim()}:{title:line.slice(0,i).trim(),url:line.slice(i+1).trim()}}).filter(l=>l.title&&safeUrl(l.url));
       const item={id,day:$("eventDay").value,time:$("eventTime").value.trim(),title:$("eventTitle").value.trim(),category:$("eventCategory").value,desc:$("eventDesc").value.trim(),note:$("eventNote").value.trim(),links};
@@ -354,6 +384,7 @@
       const idx=hotels.findIndex(x=>x.id===id);if(idx>=0)hotels[idx]=h;else hotels.push(h);$("hotelDialog").close();await commit();
     });
     $("deleteHotelBtn").onclick=async()=>{const id=$("hotelId").value;if(confirm("確定刪除這間住宿？")){hotels=hotels.filter(h=>h.id!==id);$("hotelDialog").close();await commit()}};
+
     $("dayList").addEventListener("click",e=>{
       const b=e.target.closest("button");if(!b)return;
       if(b.dataset.editEvent){const item=events.find(x=>x.id===b.dataset.editEvent);if(item)openEvent(item)}
@@ -370,12 +401,23 @@
     $("addCheckBtn").onclick=async()=>{const text=$("newCheck").value.trim();if(text){checks.push({id:makeId(),text,done:false});$("newCheck").value="";await commit()}};
     $("addLinkBtn").onclick=async()=>{const title=$("newLinkTitle").value.trim(),url=$("newLinkUrl").value.trim();if(!title||!safeUrl(url)){alert("請輸入連結名稱及有效的 http/https 網址。");return}usefulLinks.push({id:makeId(),title,url});$("newLinkTitle").value="";$("newLinkUrl").value="";await commit()};
     $("usefulLinks").addEventListener("click",e=>{const b=e.target.closest("[data-delete-link]");if(b){usefulLinks=usefulLinks.filter(l=>l.id!==b.dataset.deleteLink);commit()}});
-    $("clearFirebaseBtn").onclick=()=>{if(confirm("清除目前瀏覽器內的 Firebase 設定？")){localStorage.removeItem("nagoyaFirebaseConfig");$("firebaseEnable").checked=false;$("firebaseApiKey").value="";$("firebaseAuthDomain").value="";$("firebaseProjectId").value="";$("firebaseAppId").value="";cloud=null;setStatus("已清除 Firebase 設定，現在使用本機模式。")}};
+
+    $("clearFirebaseBtn").onclick=()=>{if(confirm("清除目前瀏覽器內的 Firebase 設定？")){localStorage.removeItem(FB_CFG_KEY);loadFbCfgIntoForm();$("firebaseEnable").checked=false;cloud=null;setStatus("已清除 Firebase 設定，現在使用本機模式。")}};
+
     $("settingsForm").addEventListener("submit",async ev=>{
-      ev.preventDefault();const cfg={apiKey:$("firebaseApiKey").value.trim(),authDomain:$("firebaseAuthDomain").value.trim(),projectId:$("firebaseProjectId").value.trim(),appId:$("firebaseAppId").value.trim(),enabled:$("firebaseEnable").checked};
-      localStorage.setItem("nagoyaFirebaseConfig",JSON.stringify(cfg));$("settingsDialog").close();
+      ev.preventDefault();
+      const cfg={
+        apiKey:$("firebaseApiKey").value.trim(),
+        authDomain:$("firebaseAuthDomain").value.trim(),
+        projectId:$("firebaseProjectId").value.trim(),
+        appId:$("firebaseAppId").value.trim(),
+        enabled:$("firebaseEnable").checked
+      };
+      localStorage.setItem(FB_CFG_KEY,JSON.stringify(cfg));
+      $("settingsDialog").close();
       if(cfg.enabled){await connectFirebase(cfg)}else{cloud=null;setStatus("已儲存設定；目前使用本機模式。")}
     });
+
     async function connectFirebase(cfg){
       if(!cfg.apiKey||!cfg.projectId||!cfg.appId){setStatus("Firebase 設定未完整，請填入 apiKey、projectId 及 appId。");return}
       try{
@@ -384,17 +426,42 @@
         const {getFirestore,doc,getDoc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
         const app=getApps().find(a=>a.name==="nagoya-trip")||initializeApp({apiKey:cfg.apiKey,authDomain:cfg.authDomain,projectId:cfg.projectId,appId:cfg.appId},"nagoya-trip");
         const db=getFirestore(app), ref=doc(db,"tripData","nagoya-2026");
-        cloud={saveAll:async data=>setDoc(ref,{...data,updatedAt:new Date().toISOString()}),load:async()=>{const snap=await getDoc(ref);return snap.exists()?snap.data():null}};
+        cloud={
+          saveAll:async data=>setDoc(ref,{...data,updatedAt:new Date().toISOString()}),
+          load:async()=>{const snap=await getDoc(ref);return snap.exists()?snap.data():null}
+        };
         const data=await cloud.load();
-        if(data&&confirm("Firebase 已有行程資料。要載入雲端資料取代目前畫面內容嗎？")){hotels=data.hotels||hotels;events=data.events||events;checks=data.checks||checks;usefulLinks=data.usefulLinks||usefulLinks;saveLocal();renderAll()}
-        else if(!data){await cloud.saveAll({hotels,events,checks,usefulLinks})}
-        $("modeNotice").innerHTML="<strong>Firebase 已設定。</strong> 資料會同步到此 Firebase 專案；多人使用前請先設定登入驗證及 Firestore 安全規則。";
+        if(data&&confirm("Firebase 已有行程資料。要載入雲端資料取代目前畫面內容嗎？")){
+          hotels=data.hotels||hotels;events=data.events||events;checks=data.checks||checks;usefulLinks=data.usefulLinks||usefulLinks;saveLocal();renderAll();
+        }else if(!data){
+          await cloud.saveAll({hotels,events,checks,usefulLinks});
+        }
+        $("modeNotice").innerHTML="<strong>Firebase 已連線。</strong> 資料會同步到 <code>yunnan-trip-d5626</code> 專案；多人使用前請先設定登入驗證及 Firestore 安全規則。";
         setStatus("Firebase 連線成功。");
-      }catch(err){cloud=null;setStatus("Firebase 連線失敗："+err.message+"。請檢查設定、Firestore 是否已建立及安全規則。")}
+      }catch(err){
+        cloud=null;
+        setStatus("Firebase 連線失敗："+err.message+"。請檢查設定、Firestore 是否已建立及安全規則。");
+      }
     }
-    readLocal();renderAll();setStatus("本機預覽模式：新增／編輯內容會保存在此瀏覽器。");
-    const existing=JSON.parse(localStorage.getItem("nagoyaFirebaseConfig")||"null");
-    if(existing?.enabled)connectFirebase(existing);
+
+    /* ===== 初始化 ===== */
+    readLocal();
+    renderAll();
+
+    // 如果 localStorage 未有設定，就自動寫入預設設定
+    if(!getStoredFbCfg()){
+      localStorage.setItem(FB_CFG_KEY,JSON.stringify(DEFAULT_FIREBASE_CONFIG));
+    }
+    loadFbCfgIntoForm();
+
+    // 自動嘗試連線（因為已預設 enabled: true）
+    const existing=getStoredFbCfg();
+    if(existing?.enabled){
+      setStatus("正在自動連接 Firebase…");
+      connectFirebase(existing);
+    }else{
+      setStatus("本機預覽模式：新增／編輯內容會保存在此瀏覽器。");
+    }
   </script>
 </body>
-    </html>
+</html>
