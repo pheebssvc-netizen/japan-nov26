@@ -25,15 +25,25 @@
     .hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
     .pill{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:5px 11px;font-size:.84rem;background:rgba(255,255,255,.08)}
     .wrap{padding:20px 16px 50px}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:16px}
-    .nav{display:flex;gap:7px;flex-wrap:wrap}
-    .nav a{display:inline-block;text-decoration:none;background:#fffefa;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.9rem;color:var(--ink)}
+    .toolbar{position:sticky;top:0;z-index:100;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 -16px 16px;padding:10px 16px;background:rgba(247,245,239,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(35,50,42,.06)}
+    .nav{display:flex;gap:7px;flex:1 1 500px;min-width:0;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:2px 0 5px}
+    .nav a{display:inline-block;flex:0 0 auto;white-space:nowrap;text-decoration:none;background:#fffefa;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.9rem;color:var(--ink)}
+    .nav a:focus-visible{outline:3px solid #d6b46a;outline-offset:2px}
+    section[id]{scroll-margin-top:105px}
+    .map-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .map-item{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;min-width:0}
+    .map-item-main{min-width:0}
+    .map-item h3{font-size:.98rem;margin:0 0 3px;overflow-wrap:anywhere}
+    .map-item p{font-size:.84rem;color:var(--muted);margin:0;overflow-wrap:anywhere}
+    .map-type{display:inline-block;font-size:.72rem;color:var(--green);background:#e7eee5;border-radius:999px;padding:2px 7px;margin-bottom:4px}
+    .map-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;background:var(--green);color:#fff;text-decoration:none;border-radius:10px;padding:8px 10px;font-size:.83rem;font-weight:700;white-space:nowrap}
+    .map-intro{margin:-4px 0 12px;color:var(--muted);font-size:.92rem}
     .actions{display:flex;gap:8px;flex-wrap:wrap}
     .btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:var(--green);color:white}
     .btn.secondary{background:#e7ece6;color:var(--green)}
     .btn.outline{background:transparent;border:1px solid var(--line);color:var(--ink)}
     .btn.danger{background:#f7e6e0;color:#8f3928}
-    .status{font-size:.85rem;color:var(--muted);padding:9px 12px;background:#eeeee7;border-radius:12px}
+    .status{font-size:.85rem;color:var(--muted);padding:9px 12px;background:#eeeee7;border-radius:12px;margin-bottom:10px}
     .notice{background:#fff8e6;border:1px solid #ead8a8;padding:13px 15px;border-radius:14px;margin:14px 0;color:#5d4b27;font-size:.92rem}
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:26px 0 12px}
     .section-head h2{margin:0;font-size:1.35rem}
@@ -87,8 +97,10 @@
     @media(max-width:760px){
       .hotel-grid{grid-template-columns:1fr}
       .bottom-grid{grid-template-columns:1fr}
-      .toolbar{align-items:stretch}
-      .actions{width:100%}.actions .btn{flex:1}
+      .toolbar{align-items:stretch;gap:6px}
+      .nav{flex-basis:100%;width:100%;order:0}
+      .actions{width:100%;order:1}.actions .btn{flex:1;padding:9px 10px}
+      .map-grid{grid-template-columns:1fr}
       .event{grid-template-columns:76px 1fr;gap:8px}
       .day-head{padding:14px}.day-body{padding:8px 14px 14px}
       .form-grid{grid-template-columns:1fr}
@@ -114,32 +126,30 @@
   <main class="wrap">
     <div class="toolbar">
       <nav class="nav" aria-label="頁面導覽">
-        <a href="#hotels">住宿</a><a href="#itinerary">每日行程</a><a href="#checklist">準備清單</a><a href="#useful-links">實用連結</a>
+        <a href="#itinerary">每日行程</a><a href="#hotels">住宿</a><a href="#checklist">準備清單</a><a href="#useful-links">實用連結</a><a href="#maps">Google Maps 地點清單</a>
       </nav>
       <div class="actions">
         <button class="btn" id="addEventBtn">＋ 新增行程項目</button>
-        <button class="btn secondary" id="settingsBtn">Firebase 設定</button>
       </div>
     </div>
 
-    <div class="notice" id="modeNotice">
-      <strong>目前為本機預覽模式。</strong> 你可以先試用新增、編輯及備註功能；設定 Firebase 後，資料才會同步到不同手機／電腦。
-    </div>
     <div class="status" id="status" role="status">正在載入行程…</div>
 
+    <!-- 每日行程（最上） -->
+    <section id="itinerary">
+      <div class="section-head">
+        <div><h2>🗓️ 每日行程</h2><p>時間、交通、景點介紹、備註及網址都可以自行加減。</p></div>
+      </div>
+      <div class="day-list" id="dayList"></div>
+    </section>
+
+    <!-- 住宿安排 -->
     <section id="hotels">
       <div class="section-head">
         <div><h2>🏨 住宿安排</h2><p>住宿日期已按目前提供的資料預填；可按「編輯」修改。</p></div>
         <button class="btn outline" id="addHotelBtn">＋ 新增住宿</button>
       </div>
       <div class="hotel-grid" id="hotelGrid"></div>
-    </section>
-
-    <section id="itinerary">
-      <div class="section-head">
-        <div><h2>🗓️ 每日行程</h2><p>時間、交通、景點介紹、備註及網址都可以自行加減。</p></div>
-      </div>
-      <div class="day-list" id="dayList"></div>
     </section>
 
     <div class="bottom-grid">
@@ -162,6 +172,16 @@
         </div>
       </section>
     </div>
+
+    <!-- Google Maps 地點清單（最落） -->
+    <section id="maps">
+      <div class="section-head">
+        <div><h2>📍 Google Maps 地點清單</h2><p>集中查看行程景點、酒店及各站地點；按一下即可開啟 Google Maps。</p></div>
+      </div>
+      <p class="map-intro">清單會跟隨你新增、編輯或刪除的酒店及行程項目自動更新。路線／交通項目會以項目名稱搜尋地圖。</p>
+      <div class="map-grid" id="mapList"></div>
+    </section>
+
     <footer>名古屋・白川鄉・飛驒高山慢遊手帳｜行程時間為規劃參考，出發前請核實交通及景點最新資料。</footer>
   </main>
 
@@ -201,22 +221,6 @@
         <div class="field"><label for="hotelUrl">酒店／訂房連結</label><input id="hotelUrl" placeholder="https://..."></div>
       </div>
       <div class="modal-foot"><button type="button" class="btn danger hide" id="deleteHotelBtn">刪除住宿</button><div style="display:flex;gap:8px;margin-left:auto"><button type="button" class="btn outline" data-close="hotelDialog">取消</button><button type="submit" class="btn">儲存住宿</button></div></div>
-    </form>
-  </dialog>
-
-  <dialog id="settingsDialog">
-    <form id="settingsForm">
-      <div class="modal-head"><h2>Firebase 設定</h2><button type="button" class="btn outline" data-close="settingsDialog">關閉</button></div>
-      <div class="modal-body">
-        <p style="margin-top:0;color:var(--muted)">以下已預填你嘅 Firebase 專案設定。確認啟用後，資料會同步到 Cloud Firestore。設定會保存在目前瀏覽器的 localStorage；不要將服務帳戶私鑰放入網頁。</p>
-        <div class="field"><label for="firebaseApiKey">apiKey</label><input id="firebaseApiKey" autocomplete="off"></div>
-        <div class="field"><label for="firebaseAuthDomain">authDomain</label><input id="firebaseAuthDomain" placeholder="your-project.firebaseapp.com"></div>
-        <div class="field"><label for="firebaseProjectId">projectId</label><input id="firebaseProjectId"></div>
-        <div class="field"><label for="firebaseAppId">appId</label><input id="firebaseAppId"></div>
-        <div class="notice">多人共同編輯時，請設定 Firebase Authentication（例如 Google 登入）及 Firestore 安全規則。此簡易版本不含登入，若 Firestore 開放匿名讀寫，任何知道專案設定的人都可能修改資料；正式使用前應加上身份驗證和規則。</div>
-        <div class="field"><label class="check-row"><input id="firebaseEnable" type="checkbox">啟用 Firestore 雲端同步</label></div>
-      </div>
-      <div class="modal-foot"><button type="button" class="btn outline" id="clearFirebaseBtn">清除設定</button><div style="display:flex;gap:8px;margin-left:auto"><button type="button" class="btn outline" data-close="settingsDialog">取消</button><button type="submit" class="btn">儲存設定並連線</button></div></div>
     </form>
   </dialog>
 
@@ -278,16 +282,6 @@
       {id:"l6",title:"德川園官方網站",url:"https://www.tokugawaen.aichi.jp/"},
       {id:"l7",title:"AEON Mall Noritake 官方交通資訊",url:"https://nagoya-noritake-garden.aeonmall.jp/access"}
     ];
-
-    /* ===== 已預填你嘅 Firebase 設定 ===== */
-    const DEFAULT_FIREBASE_CONFIG = {
-      apiKey: "AIzaSyAtthBBNoHJkN6B_e8DVjzDpK_eB0wfExo",
-      authDomain: "yunnan-trip-d5626.firebaseapp.com",
-      projectId: "yunnan-trip-d5626",
-      appId: "1:956753515518:web:12586ad55c62ddc63426af",
-      enabled: true
-    };
-
     const $ = id => document.getElementById(id);
     const statusEl = $("status");
     const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -296,14 +290,11 @@
     let hotels = structuredClone(seedHotels), events = structuredClone(seedEvents), checks = structuredClone(seedChecks), usefulLinks = structuredClone(seedLinks);
     let cloud = null;
     const LOCAL_KEY = "nagoyaSlowTripV14";
-    const FB_CFG_KEY = "nagoyaFirebaseConfig";
-
     function setStatus(msg){statusEl.textContent=msg}
     function readLocal(){try{const x=JSON.parse(localStorage.getItem(LOCAL_KEY)||"null");if(x){hotels=x.hotels||hotels;events=x.events||events;checks=x.checks||checks;usefulLinks=x.usefulLinks||usefulLinks}}catch{}}
     function saveLocal(){try{localStorage.setItem(LOCAL_KEY,JSON.stringify({hotels,events,checks,usefulLinks}))}catch{}}
-    function persistStatus(){saveLocal();if(cloud){setStatus("Firebase 已連線；變更會同步到雲端。")}else{setStatus("本機已儲存變更（只在此瀏覽器）；設定 Firebase 後才會跨裝置同步。")}}
+    function persistStatus(){saveLocal();if(cloud){setStatus("已同步到雲端。")}else{setStatus("已儲存變更（儲存在此瀏覽器）。")}}
     function sortEvents(a,b){return a.day.localeCompare(b.day)||a.time.localeCompare(b.time)}
-
     function renderHotels(){
       const grid=$("hotelGrid");
       if(!hotels.length){grid.innerHTML='<div class="empty">尚未新增住宿。</div>';return}
@@ -330,14 +321,27 @@
         <button class="mini" data-add-day="${esc(d.date)}">＋ 為此日新增項目</button></div></article>`;
       }).join("");
     }
+    function googleMapsUrl(query){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(String(query||"").trim())}
+    function renderMaps(){
+      const items=[];
+      hotels.slice().sort((a,b)=>a.checkin.localeCompare(b.checkin)).forEach(h=>{
+        const query=[h.name,h.address].filter(Boolean).join(" ");
+        items.push({id:"hotel-"+h.id,title:h.name,detail:[h.checkin&&h.checkout?`${h.checkin} 至 ${h.checkout}`:"",h.address||""].filter(Boolean).join(" · "),type:"住宿",url:googleMapsUrl(query)});
+      });
+      events.slice().sort(sortEvents).forEach(e=>{
+        const mapsLink=(e.links||[]).find(l=>/google\s*maps|地圖|map/i.test(l.title||"")&&safeUrl(l.url));
+        const query=[e.title,e.desc].filter(Boolean).join(" ");
+        items.push({id:"event-"+e.id,title:e.title,detail:[e.day,e.time].filter(Boolean).join(" · "),type:e.category||"行程",url:mapsLink?safeUrl(mapsLink.url):googleMapsUrl(e.title)});
+      });
+      $("mapList").innerHTML=items.length?items.map(item=>`<article class="map-item"><div class="map-item-main"><span class="map-type">${esc(item.type)}</span><h3>${esc(item.title)}</h3><p>${esc(item.detail||"可在 Google Maps 查看位置")}</p></div><a class="map-btn" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="在 Google Maps 開啟 ${esc(item.title)}">地圖 ↗</a></article>`).join(""):'<div class="empty">尚未有地點。新增酒店或行程項目後，地圖清單會自動更新。</div>';
+    }
     function renderChecks(){
       $("checklistItems").innerHTML=checks.map(c=>`<label class="check-row"><input type="checkbox" data-check="${esc(c.id)}" ${c.done?"checked":""}><span style="${c.done?"text-decoration:line-through;color:#89918b":""}">${esc(c.text)}</span><button type="button" class="mini" data-delete-check="${esc(c.id)}" style="margin-left:auto">刪除</button></label>`).join("");
     }
     function renderLinks(){
       $("usefulLinks").innerHTML=usefulLinks.map(l=>`<div style="display:flex;gap:7px;align-items:center"><a style="flex:1" href="${esc(safeUrl(l.url)||"#")}" target="_blank" rel="noopener">${esc(l.title)} ↗</a><button class="mini" data-delete-link="${esc(l.id)}">刪除</button></div>`).join("");
     }
-    function renderAll(){renderHotels();renderEvents();renderChecks();renderLinks()}
-
+    function renderAll(){renderHotels();renderEvents();renderMaps();renderChecks();renderLinks()}
     function openEvent(e=null,day=null){
       $("eventForm").reset();$("eventId").value=e?.id||"";$("eventDialogTitle").textContent=e?"編輯行程項目":"新增行程項目";
       $("eventDay").value=e?.day||day||"2026-11-19";$("eventTime").value=e?.time||"";$("eventTitle").value=e?.title||"";$("eventCategory").value=e?.category||"景點";$("eventDesc").value=e?.desc||"";$("eventNote").value=e?.note||"";
@@ -348,31 +352,14 @@
       ["Name","Checkin","Checkout","Address","Info","Url"].forEach(k=>{$("hotel"+k).value=h?.[({Name:"name",Checkin:"checkin",Checkout:"checkout",Address:"address",Info:"info",Url:"url"})[k]]||""});
       $("deleteHotelBtn").classList.toggle("hide",!h);$("hotelDialog").showModal();
     }
-
-    function getStoredFbCfg(){
-      try{const raw=localStorage.getItem(FB_CFG_KEY);if(raw)return JSON.parse(raw)}catch{}
-      return null;
-    }
-    function loadFbCfgIntoForm(){
-      const cfg=getStoredFbCfg()||DEFAULT_FIREBASE_CONFIG;
-      $("firebaseApiKey").value=cfg.apiKey||"";
-      $("firebaseAuthDomain").value=cfg.authDomain||"";
-      $("firebaseProjectId").value=cfg.projectId||"";
-      $("firebaseAppId").value=cfg.appId||"";
-      $("firebaseEnable").checked=!!cfg.enabled;
-    }
-
     async function commit(){
       persistStatus();
-      if(cloud){try{await cloud.saveAll({hotels,events,checks,usefulLinks});setStatus("Firebase 雲端同步完成。")}catch(err){setStatus("本機已儲存，但 Firebase 同步失敗："+err.message)}}
+      if(cloud){try{await cloud.saveAll({hotels,events,checks,usefulLinks});setStatus("已同步到雲端。")}catch(err){setStatus("本機已儲存，但雲端同步失敗："+err.message)}}
       renderAll();
     }
-
     $("addEventBtn").onclick=()=>openEvent();
     $("addHotelBtn").onclick=()=>openHotel();
-    $("settingsBtn").onclick=()=>{loadFbCfgIntoForm();$("settingsDialog").showModal()};
     document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).close()));
-
     $("eventForm").addEventListener("submit",async ev=>{
       ev.preventDefault();const id=$("eventId").value||makeId();const links=$("eventLinks").value.split("\n").map(line=>{const i=line.indexOf("|");return i<0?{title:line.trim(),url:line.trim()}:{title:line.slice(0,i).trim(),url:line.slice(i+1).trim()}}).filter(l=>l.title&&safeUrl(l.url));
       const item={id,day:$("eventDay").value,time:$("eventTime").value.trim(),title:$("eventTitle").value.trim(),category:$("eventCategory").value,desc:$("eventDesc").value.trim(),note:$("eventNote").value.trim(),links};
@@ -384,7 +371,6 @@
       const idx=hotels.findIndex(x=>x.id===id);if(idx>=0)hotels[idx]=h;else hotels.push(h);$("hotelDialog").close();await commit();
     });
     $("deleteHotelBtn").onclick=async()=>{const id=$("hotelId").value;if(confirm("確定刪除這間住宿？")){hotels=hotels.filter(h=>h.id!==id);$("hotelDialog").close();await commit()}};
-
     $("dayList").addEventListener("click",e=>{
       const b=e.target.closest("button");if(!b)return;
       if(b.dataset.editEvent){const item=events.find(x=>x.id===b.dataset.editEvent);if(item)openEvent(item)}
@@ -402,66 +388,26 @@
     $("addLinkBtn").onclick=async()=>{const title=$("newLinkTitle").value.trim(),url=$("newLinkUrl").value.trim();if(!title||!safeUrl(url)){alert("請輸入連結名稱及有效的 http/https 網址。");return}usefulLinks.push({id:makeId(),title,url});$("newLinkTitle").value="";$("newLinkUrl").value="";await commit()};
     $("usefulLinks").addEventListener("click",e=>{const b=e.target.closest("[data-delete-link]");if(b){usefulLinks=usefulLinks.filter(l=>l.id!==b.dataset.deleteLink);commit()}});
 
-    $("clearFirebaseBtn").onclick=()=>{if(confirm("清除目前瀏覽器內的 Firebase 設定？")){localStorage.removeItem(FB_CFG_KEY);loadFbCfgIntoForm();$("firebaseEnable").checked=false;cloud=null;setStatus("已清除 Firebase 設定，現在使用本機模式。")}};
-
-    $("settingsForm").addEventListener("submit",async ev=>{
-      ev.preventDefault();
-      const cfg={
-        apiKey:$("firebaseApiKey").value.trim(),
-        authDomain:$("firebaseAuthDomain").value.trim(),
-        projectId:$("firebaseProjectId").value.trim(),
-        appId:$("firebaseAppId").value.trim(),
-        enabled:$("firebaseEnable").checked
-      };
-      localStorage.setItem(FB_CFG_KEY,JSON.stringify(cfg));
-      $("settingsDialog").close();
-      if(cfg.enabled){await connectFirebase(cfg)}else{cloud=null;setStatus("已儲存設定；目前使用本機模式。")}
-    });
-
     async function connectFirebase(cfg){
-      if(!cfg.apiKey||!cfg.projectId||!cfg.appId){setStatus("Firebase 設定未完整，請填入 apiKey、projectId 及 appId。");return}
+      if(!cfg.apiKey||!cfg.projectId||!cfg.appId){setStatus("Firebase 設定未完整。");return}
       try{
         setStatus("正在連接 Firebase…");
         const {initializeApp,getApps}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
         const {getFirestore,doc,getDoc,setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
         const app=getApps().find(a=>a.name==="nagoya-trip")||initializeApp({apiKey:cfg.apiKey,authDomain:cfg.authDomain,projectId:cfg.projectId,appId:cfg.appId},"nagoya-trip");
         const db=getFirestore(app), ref=doc(db,"tripData","nagoya-2026");
-        cloud={
-          saveAll:async data=>setDoc(ref,{...data,updatedAt:new Date().toISOString()}),
-          load:async()=>{const snap=await getDoc(ref);return snap.exists()?snap.data():null}
-        };
+        cloud={saveAll:async data=>setDoc(ref,{...data,updatedAt:new Date().toISOString()}),load:async()=>{const snap=await getDoc(ref);return snap.exists()?snap.data():null}};
         const data=await cloud.load();
-        if(data&&confirm("Firebase 已有行程資料。要載入雲端資料取代目前畫面內容嗎？")){
-          hotels=data.hotels||hotels;events=data.events||events;checks=data.checks||checks;usefulLinks=data.usefulLinks||usefulLinks;saveLocal();renderAll();
-        }else if(!data){
-          await cloud.saveAll({hotels,events,checks,usefulLinks});
-        }
-        $("modeNotice").innerHTML="<strong>Firebase 已連線。</strong> 資料會同步到 <code>yunnan-trip-d5626</code> 專案；多人使用前請先設定登入驗證及 Firestore 安全規則。";
-        setStatus("Firebase 連線成功。");
-      }catch(err){
-        cloud=null;
-        setStatus("Firebase 連線失敗："+err.message+"。請檢查設定、Firestore 是否已建立及安全規則。");
-      }
+        if(data&&confirm("雲端已有行程資料。要載入雲端資料取代目前畫面內容嗎？")){hotels=data.hotels||hotels;events=data.events||events;checks=data.checks||checks;usefulLinks=data.usefulLinks||usefulLinks;saveLocal();renderAll()}
+        else if(!data){await cloud.saveAll({hotels,events,checks,usefulLinks})}
+        setStatus("雲端連線成功。");
+      }catch(err){cloud=null;setStatus("雲端連線失敗："+err.message)}
     }
 
-    /* ===== 初始化 ===== */
-    readLocal();
-    renderAll();
-
-    // 如果 localStorage 未有設定，就自動寫入預設設定
-    if(!getStoredFbCfg()){
-      localStorage.setItem(FB_CFG_KEY,JSON.stringify(DEFAULT_FIREBASE_CONFIG));
-    }
-    loadFbCfgIntoForm();
-
-    // 自動嘗試連線（因為已預設 enabled: true）
-    const existing=getStoredFbCfg();
-    if(existing?.enabled){
-      setStatus("正在自動連接 Firebase…");
-      connectFirebase(existing);
-    }else{
-      setStatus("本機預覽模式：新增／編輯內容會保存在此瀏覽器。");
-    }
+    readLocal();renderAll();
+    const existing=JSON.parse(localStorage.getItem("nagoyaFirebaseConfig")||"null");
+    if(existing?.enabled){connectFirebase(existing)}
+    else{setStatus("已載入行程；變更會儲存在此瀏覽器。")}
   </script>
 </body>
 </html>
